@@ -1,6 +1,7 @@
 import React from 'react';
-import Heading from "./first_page_components/heading";
-import Login from "./first_page_components/login";
+import Heading from "./components/heading";
+import Loginpage from "./components/login/loginpage";
+import Mainpage from "./components/main/mainpage";
 
 function App() {
     return (<div className="firstPage" style={{
@@ -8,7 +9,7 @@ function App() {
         backgroundSize: "45%",
         backgroundRepeat: "repeat"
     }}><Heading/><br/>
-    <Login/>
+        <Mainpage/>
     </div>)
 }
 
