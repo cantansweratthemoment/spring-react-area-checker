@@ -1,28 +1,33 @@
 package com.example.wp.domain;
-import org.hibernate.annotations.CreationTimestamp;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import java.util.Date;
+import java.util.List;
+
 @Entity
-@Table(
-        indexes = {@Index(columnList = "creationtime")},
-        uniqueConstraints = {@UniqueConstraint(columnNames = "login")}
+@Table(name = "users"
 )
 public class User {
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
 
     @NotNull
     @NotEmpty
-    @Pattern(regexp = "[a-z]+", message = "Wrong login")
+    @Column
     private String login;
 
-    @CreationTimestamp
-    private Date creationtime;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<Point> points;
+
+    public List<Point> getPoints() {
+        return points;
+    }
+
+    public void setPoints(List<Point> points) {
+        this.points = points;
+    }
 
     public long getId() {
         return id;
@@ -38,14 +43,6 @@ public class User {
 
     public void setLogin(String login) {
         this.login = login;
-    }
-
-    public Date getCreationtime() {
-        return creationtime;
-    }
-
-    public void setCreationtime(Date creationtime) {
-        this.creationtime = creationtime;
     }
 
 }
