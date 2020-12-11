@@ -1,6 +1,6 @@
 import React from "react";
-import Login from "./login";
-import CoordinatesForm from "../main/form";
+import Login from "./Login";
+import CoordinatesForm from "../main/Form";
 
 function Loginpage() {
     return (<div>
