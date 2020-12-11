@@ -5,12 +5,13 @@ import Mainpage from "./components/main/Mainpage";
 
 function App() {
   return (<div className="firstPage" style={{
-    backgroundImage: "url(wallpaper.JPEG)",
+    backgroundImage: "url(images/wallpaper.JPEG)",//TODO Новогодние котики?
     backgroundSize: "45%",
     backgroundRepeat: "repeat"
   }}><Heading/><br/>
-    <Mainpage/>
+    <Loginpage/>
   </div>)
 }
 
 export default App;
+//TODO отображение нужной страницы в зависимости от состояния

@@ -5,7 +5,6 @@ import CoordinatesForm from "../main/Form";
 function Loginpage() {
     return (<div>
         <Login/>
-        <CoordinatesForm/>
     </div>);
 }
 

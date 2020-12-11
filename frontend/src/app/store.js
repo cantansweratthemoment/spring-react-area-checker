@@ -1,8 +1,19 @@
-import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
+import {createStore} from "redux";
 
-export default configureStore({
-  reducer: {
-    counter: counterReducer,
-  },
-});
+const initialState = {
+    token: localStorage.getItem("token")
+};
+
+function reducer(state, action) {
+    switch (action.type) {
+        case "change":
+            localStorage.setItem("token", action.value)
+            return {token: action.value};
+        default:
+            return state;
+    }
+}
+
+const store = createStore(reducer, initialState);
+//todo
+export default store;

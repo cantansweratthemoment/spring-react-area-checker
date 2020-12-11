@@ -1,4 +1,8 @@
 import React, {useState} from "react";
+import {InputText} from 'primereact/inputtext';
+import {Password} from 'primereact/password';
+import {Button} from "primereact/button";
+import {Messages} from "primereact/messages";
 
 function Login() {
 
@@ -15,8 +19,14 @@ function Login() {
         body = "?" + body.join("&");
         fetch("/login" + body, {
             method: "POST"
-        }).then(response => response.text())
-        //TODO обработать ошибки
+        }).then(response => response.text().then(text => {
+                if (response.ok) {
+                    //TODO
+                } else {
+                    //TODO
+                }
+            }
+        ))
     }
 
     const signUp = e => {
@@ -32,8 +42,13 @@ function Login() {
         body = "?" + body.join("&");
         fetch("/signup" + body, {
             method: "POST"
-        }).then(response => response.text())
-        //TODO обработать ошибки
+        }).then(response => response.text().then(text => {
+            if (response.ok) {
+                //TODO
+            } else {
+                //TODO
+            }
+        }))
     }
 
     const [username, setUsername] = useState("");
@@ -53,4 +68,4 @@ function Login() {
 
 export default Login
 //TODO убрать лишние логи
-//TODO Primereact
+//TODO Primereact (я не знаю в чем проблема)
