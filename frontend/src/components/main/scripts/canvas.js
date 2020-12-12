@@ -1,54 +1,44 @@
-const canvas = document.getElementById('canvas');
-document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("canvas").addEventListener("click", (e) => {
-        let rr = document.getElementById("form:r_chooser");
-        let r = rr.value;
-        let maslo = document.getElementById('canvas');
-        let event_x = e.pageX - maslo.offsetLeft;
-        let event_y = e.pageY - maslo.offsetTop;
-        let x = (event_x - 250) * r / 200;
-        let y = (250 - event_y) * r / 200;
-        let submitX = document.getElementById("hiddenform:x_hidden_chooser");
-        let submitY = document.getElementById("hiddenform:y_hidden_chooser");
-        let submitR = document.getElementById("hiddenform:r_hidden_chooser");
-        submitX.value = x;
-        submitY.value = y;
-        submitR.value = r;
-        let hiddenSubmit = document.getElementById("hiddenform:hiddensubmit");
-        hiddenSubmit.click();
-        drawPoints();
-    })
-});
-document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("form:submit").addEventListener("click", (e) => {
-        setTimeout(drawCanvas, 100);
-    })
-});
-document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("form:r_chooser").addEventListener("change", (e) => {
-        setTimeout(drawCanvas, 100);
-    })
-});
+import store from "../../../app/store";
 
-function drawCanvas() {
-    let rr = document.getElementById("form:r_chooser");
-    let r = rr.value;
+function clicked(e, r, setChecks) {
+    let r_val = parseFloat(r)
+    if (isNaN(r_val)) {
+        r_val = 1
+    }
+    let maslo = document.getElementById('canvas');
+    let event_x = e.pageX - maslo.offsetLeft;
+    let event_y = e.pageY - maslo.offsetTop;
+    let x = (event_x - 250) * r / 200;
+    let y = (250 - event_y) * r / 200;
+    drawPoints();
+    const checkNumbers = (q, a, b) => {
+        return ((q > a) && (q < b));
+    }
+    if (checkNumbers(r_val, 0, 3) && checkNumbers(x, -3, 3) && checkNumbers(y, -3, 3)) {
+        fetch("/point/token=" + store.getState().token + "&x=" + x + "&y=" + y + "&r=" + r_val, {
+            method: 'POST'
+        }).then(response => response.text()
+            .then(text => setChecks(JSON.parse(text).reverse())))
+    }
+}
+
+function drawCanvas(context, r) {
+    context.canvas.width = context.canvas.offsetWidth;
+    context.canvas.height = context.canvas.offsetHeight;
+    let width = context.canvas.width;
+    let height = context.canvas.height;
     let r_text = r + "";
     let rhalf_text = r / 2 + "";
-    let canvas = document.getElementById("canvas"),
-        context = canvas.getContext("2d");
-    canvas.width = 500;
-    canvas.height = 500;
-    context.clearRect(0, 0, 500, 500);
+    context.clearRect(0, 0, width, height);
     context.fillStyle = "E8D7FF";
-    context.fillRect(50, 250, 200, 200);
+    context.fillRect(150, 50, 100, 200);
     context.beginPath();
     context.moveTo(250, 250);
     context.lineTo(350, 250);
-    context.lineTo(250, 350);
+    context.lineTo(250, 50);
     context.fill();
     context.moveTo(250, 250);
-    context.arc(250, 250, 100, Math.PI, Math.PI * 3 / 2);
+    context.arc(250, 250, 100, Math.PI/2, Math.PI);
     context.fill();
     context.beginPath();
     context.strokeStyle = "#FF47A0";
@@ -103,7 +93,5 @@ function drawPoints() {
             Number(coordinates[i + 2].innerHTML), coordinates[i + 3].innerHTML);
     }
 }
-
-function changeR() {
-    drawCanvas();
-}
+//TODO особые условия для проверок с другим радиусом
+export {drawCanvas, clicked};

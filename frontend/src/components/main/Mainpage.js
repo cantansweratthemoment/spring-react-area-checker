@@ -3,6 +3,7 @@ import Logout from "./Logout";
 import CoordinatesForm from "./Form";
 import Resulttable from "./Table";
 import Graph from "./Graph";
+import "./main.css"
 
 function Mainpage() {
     const checkNumbers = (q, a, b) => {
@@ -16,11 +17,11 @@ function Mainpage() {
     const [r_form, setR] = useState('1');
     const [checks, setChecks] = useState(null);
     return (<div>
-        <Logout/>
+        <Graph r={r_form} setChecks={setChecks}/>
         <CoordinatesForm validate={validate} x_form={x_form} y_form={y_form} r_form={r_form} setX={setX} setY={setY}
-                         setR={setR}/>
+                         setR={setR} setChecks={setChecks}/>
         <Resulttable checks={checks}/>
-        <Graph/>
+        <Logout/>
     </div>)
 }
 

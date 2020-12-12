@@ -6,7 +6,7 @@ const initialState = {
 
 function reducer(state, action) {
     switch (action.type) {
-        case "change":
+        case "changetoken":
             localStorage.setItem("token", action.value)
             return {token: action.value};
         default:
@@ -14,6 +14,22 @@ function reducer(state, action) {
     }
 }
 
+function checkAuth() {
+    if (store.getState().token !== null) {
+        fetch("/checktoken" + "?token=" + store.getState().token)
+            .then(response => response.text()
+                .then((text => {
+                            if (text !== 'true') {
+                                store.dispatch({type: "change", value: null})
+                                localStorage.clear()
+                            }
+                        }
+                    )
+                )
+            )
+    }
+}
+
 const store = createStore(reducer, initialState);
-//todo
+store.subscribe(checkAuth);
 export default store;

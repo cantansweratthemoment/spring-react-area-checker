@@ -1,13 +1,16 @@
 import React from "react";
+import store from "../../app/store";
 
 function Logout() {
     const logout = e => {
-        //TODO
+        localStorage.clear();
+        store.dispatch({type: "changetoken", value: null});
         console.log("бабалити");
     }
     return (<div>
-            <button type="button" onClick={logout}>logout</button>
+            <button id="but" type="button" onClick={logout}>logout</button>
         </div>
     )
 }
+
 export default Logout

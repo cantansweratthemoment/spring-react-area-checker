@@ -1,17 +1,24 @@
-import React from 'react';
+import React, {Component} from 'react';
 import Heading from "./components/Heading";
 import Loginpage from "./components/login/Loginpage";
 import Mainpage from "./components/main/Mainpage";
 
-function App() {
-  return (<div className="firstPage" style={{
-    backgroundImage: "url(images/wallpaper.JPEG)",//TODO Новогодние котики?
-    backgroundSize: "45%",
-    backgroundRepeat: "repeat"
-  }}><Heading/><br/>
-    <Loginpage/>
-  </div>)
+class App extends Component {
+    componentDidMount() {
+        this.props.store.subscribe(() => {
+            this.setState({reduxState: this.props.store.getState()});
+        })
+    }
+
+    render() {
+        return (<div className="firstPage" style={{
+            backgroundImage: "url(images/wallpaper.JPEG)",//TODO Новогодние котики?
+            backgroundSize: "45%",
+            backgroundRepeat: "repeat"
+        }}><Heading/><br/>
+            {this.props.store.getState().token == null ? <Loginpage/> : <Mainpage/>}
+        </div>)
+    }
 }
 
 export default App;
-//TODO отображение нужной страницы в зависимости от состояния

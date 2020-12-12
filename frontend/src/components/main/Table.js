@@ -4,7 +4,7 @@ import {Column} from "primereact/column";
 
 function Resulttable(props) {
     return (
-        <DataTable value={props.checks}>
+        <DataTable id="resultTable" value={props.checks}>
             <Column header="X" field="x"/>
             <Column header="Y" field="y"/>
             <Column header="R" field="y"/>
