@@ -1,5 +1,7 @@
 package com.example.wp.service;
 
+import com.example.wp.domain.User;
+import com.example.wp.form.UserCredentials;
 import com.example.wp.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,5 +15,21 @@ public class UserService {
 
     public boolean isLoginVacant(String login){
         return userRepository.countByLogin(login) == 0;
+    }
+
+    public User register(UserCredentials userCredentials){
+        User user = new User();
+        user.setLogin(userCredentials.getLogin());
+       // userRepository.updatePassword(user.getId(), userCredentials.getPassword());
+        userRepository.save(user);
+        return user;
+    }
+
+    public User findById(long id){
+        return userRepository.findById(id).orElse(null);
+    }
+
+    public boolean findByLogin(String login){
+        return userRepository.countByLogin(login) == 1;
     }
 }
