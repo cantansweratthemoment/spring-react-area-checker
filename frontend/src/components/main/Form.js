@@ -11,15 +11,17 @@ function CoordinatesForm(props) {
             "y": props.y_form,
             "r": props.r_form
         };
+        let body = [];
+        for (const inf in information) {
+            body.push(inf + "=" + information[inf]);
+        }
+        console.log(body);
+        body = "?" + body.join("&");
         if (props.validate()) {
-            fetch("/user/checker", {
-                method: "POST",
-                body: JSON.stringify(information),
-                headers: {
-                    'Content-Type': 'json;charset=utf-8'
-                },
+            fetch("/point" + body, {
+                method: "POST"
             }).then(response => response.json().then(json => {
-                console.log(json);
+//TODO
             }))
         }
     }

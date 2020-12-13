@@ -7,14 +7,16 @@ function Login() {
 
     const signIn = e => {
         let information = {
-            "username": username, "password": password
+            "login": username, "password": password
         };
-        fetch("/login", {
-            method: "POST",
-            body: JSON.stringify(information),
-            headers: {
-                'Content-Type': 'json;charset=utf-8'
-            },
+        let body = [];
+        for (const inf in information) {
+            body.push(inf + "=" + information[inf]);
+        }
+        console.log(body);
+        body = "?" + body.join("&");
+        fetch("/login" + body, {
+            method: "POST"
         }).then(response => response.json().then(json => {
                 if (response.ok) {
                     alert("Удачный логин!")
@@ -28,14 +30,16 @@ function Login() {
 
     const signUp = e => {
         let information = {
-            "username": username, "password": password
+            "login": username, "password": password
         };
-        fetch("/register", {
-            method: "POST",
-            body: JSON.stringify(information),
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-            },
+        let body = [];
+        for (const inf in information) {
+            body.push(inf + "=" + information[inf]);
+        }
+        console.log(body);
+        body = "?" + body.join("&");
+        fetch("/register" + body, {
+            method: "POST"
         }).then(response => response.json().then(json => {
             if (response.ok) {
                 alert("Удачная регистрация!")
