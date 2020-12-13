@@ -16,7 +16,7 @@ class App extends Component {
             backgroundSize: "45%",
             backgroundRepeat: "repeat"
         }}><Heading/><br/>
-            {this.props.store.getState().token == null ? <Loginpage/> : <Mainpage/>}
+            {this.props.store.getState().token != null ? <Loginpage/> : <Mainpage/>}
         </div>)
     }
 }

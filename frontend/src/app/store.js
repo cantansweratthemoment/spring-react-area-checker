@@ -14,22 +14,5 @@ function reducer(state, action) {
     }
 }
 
-function checkAuth() {
-    if (store.getState().token !== null) {
-        fetch("/checktoken" + "?token=" + store.getState().token)
-            .then(response => response.text()
-                .then((text => {
-                            if (text !== 'true') {
-                                store.dispatch({type: "change", value: null})
-                                localStorage.clear()
-                            }
-                        }
-                    )
-                )
-            )
-    }
-}
-
 const store = createStore(reducer, initialState);
-store.subscribe(checkAuth);
 export default store;

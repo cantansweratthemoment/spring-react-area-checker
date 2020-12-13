@@ -5,11 +5,22 @@ import store from "../../app/store";
 
 function CoordinatesForm(props) {
     const submit = () => {
+        let information = {
+            "token": store.getState().token,
+            "x": props.x_form,
+            "y": props.y_form,
+            "r": props.r_form
+        };
         if (props.validate()) {
-            fetch("/point/token=" + store.getState().token + "&x=" + props.x_form + "&y=" + props.y_form + "&r=" + props.r_form, {
-                method: 'POST'
-            }).then(response => response.text()
-                .then(text => props.setChecks(JSON.parse(text).reverse())))
+            fetch("/user/checker", {
+                method: "POST",
+                body: JSON.stringify(information),
+                headers: {
+                    'Content-Type': 'json;charset=utf-8'
+                },
+            }).then(response => response.json().then(json => {
+                console.log(json);
+            }))
         }
     }
 

@@ -1,31 +1,26 @@
 import React, {useState} from "react";
-import {InputText} from 'primereact/inputtext';
-import {Password} from 'primereact/password';
+import store from "../../app/store";
+import {InputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
-import {Messages} from "primereact/messages";
-import Loginpage from "./Loginpage";
-import Mainpage from "../main/Mainpage";
 
 function Login() {
 
     const signIn = e => {
         let information = {
-            "login": username, "password": password
+            "username": username, "password": password
         };
-        console.log("log in: " + username + " " + password);
-        let body = [];
-        for (const inf in information) {
-            body.push(inf + "=" + information[inf]);
-        }
-        console.log(body);
-        body = "?" + body.join("&");
-        fetch("/login" + body, {
-            method: "POST"
-        }).then(response => response.text().then(text => {
+        fetch("/login", {
+            method: "POST",
+            body: JSON.stringify(information),
+            headers: {
+                'Content-Type': 'json;charset=utf-8'
+            },
+        }).then(response => response.json().then(json => {
                 if (response.ok) {
-                    return <Mainpage/>
+                    alert("Удачный логин!")
+                    store.dispatch({type: "changetoken", value: json.getToken});
                 } else {
-                    return <Loginpage/>
+                    alert("Ошибка!")
                 }
             }
         ))
@@ -33,23 +28,19 @@ function Login() {
 
     const signUp = e => {
         let information = {
-            "login": username, "password": password
+            "username": username, "password": password
         };
-        console.log("log in: " + username + " " + password);
-        let body = [];
-        for (const inf in information) {
-            body.push(inf + "=" + information[inf]);
-        }
-        console.log(body);
-        body = "?" + body.join("&");
-        fetch("/register" + body, {
-            method: "POST"
-        }).then(response => response.text().then(text => {
-            console.log(response.statusText);
+        fetch("/register", {
+            method: "POST",
+            body: JSON.stringify(information),
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+        }).then(response => response.json().then(json => {
             if (response.ok) {
-                return <Mainpage/>
+                alert("Удачная регистрация!")
             } else {
-                return <Loginpage/>
+                alert("Ошибка!")
             }
         }))
     }
@@ -59,10 +50,11 @@ function Login() {
     return (
         <div className="login_form">
             <form>
-                <input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)}/>
-                <input type="text" id="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
-                <button type="button" onClick={signUp}>я новенький</button>
-                <button type="button" onClick={signIn}>я уже смешарик</button>
+                <InputText type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)}/>
+                <InputText type="password" id="password" value={password}
+                           onChange={(e) => setPassword(e.target.value)}/>
+                <Button type="button" onClick={signUp}>я новенький</Button>
+                <Button type="button" onClick={signIn}>я уже смешарик</Button>
             </form>
         </div>
     )
@@ -70,5 +62,4 @@ function Login() {
 
 
 export default Login
-//TODO убрать лишние логи
-//TODO Primereact (я не знаю в чем проблема)
+//TODO Нормально обработать ответы от сервера(везде)
