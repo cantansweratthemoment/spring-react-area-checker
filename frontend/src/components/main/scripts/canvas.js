@@ -10,15 +10,28 @@ function clicked(e, r, setChecks) {
     let event_y = e.pageY - maslo.offsetTop;
     let x = (event_x - 250) * r / 200;
     let y = (250 - event_y) * r / 200;
-    drawPoints();
+    //drawPoints();
     const checkNumbers = (q, a, b) => {
         return ((q > a) && (q < b));
     }
     if (checkNumbers(r_val, 0, 3) && checkNumbers(x, -3, 3) && checkNumbers(y, -3, 3)) {
-        fetch("/point/token=" + store.getState().token + "&x=" + x + "&y=" + y + "&r=" + r_val, {
-            method: 'POST'
-        }).then(response => response.text()
-            .then(text => setChecks(JSON.parse(text).reverse())))
+        let information = {
+            "login": store.getState().login,
+            "x": x,
+            "y": y,
+            "r": r_val
+        };
+        let body = [];
+        for (const inf in information) {
+            body.push(inf + "=" + information[inf]);
+        }
+        console.log(body);
+        body = "?" + body.join("&");
+            fetch("/point" + body, {
+                method: "POST"
+            }).then(response => response.json().then(json => {
+                //todo
+            }))
     }
 }
 
@@ -30,7 +43,7 @@ function drawCanvas(context, r) {
     let r_text = r + "";
     let rhalf_text = r / 2 + "";
     context.clearRect(0, 0, width, height);
-    context.fillStyle = "E8D7FF";
+    context.fillStyle = "#E8D7FF";
     context.fillRect(150, 50, 100, 200);
     context.beginPath();
     context.moveTo(250, 250);
@@ -63,10 +76,10 @@ function drawCanvas(context, r) {
     context.strokeText(r_text, 50, 250);
     context.strokeText("Y", 250, 10);
     context.strokeText("X", 490, 250);
-    drawPoints();
+    //drawPoints();
 }
 
-function drawPoint(x, y, r, result) {
+/*function drawPoint(x, y, r, result) {
     let rr = document.getElementById("form:r_chooser");
     let rValue = rr.value;
     let finalX = 250 + x * 200 / rValue;
@@ -83,15 +96,15 @@ function drawPoint(x, y, r, result) {
     context.fill();
     context.stroke();
     context.closePath();
-}
+}*/
 
-function drawPoints() {
+/*function drawPoints() {
     let coordinates = Array.prototype.slice.call(document.getElementById("resultTable").getElementsByTagName("td"));
     for (let i = 0; i < coordinates.length; i = i + 4) {
         drawPoint(Number(coordinates[i].innerHTML),
             Number(coordinates[i + 1].innerHTML),
             Number(coordinates[i + 2].innerHTML), coordinates[i + 3].innerHTML);
     }
-}
+}*/
 //TODO особые условия для проверок с другим радиусом
 export {drawCanvas, clicked};

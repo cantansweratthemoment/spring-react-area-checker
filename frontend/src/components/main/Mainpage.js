@@ -12,14 +12,17 @@ function Mainpage() {
     const validate = () => {
         return (checkNumbers(x_form, -3, 3) && checkNumbers(y_form, -3, 3) && checkNumbers(r_form, 0, 3));
     }
+    const showChecks=()=>{
+        console.log(checks);
+    }
     const [x_form, setX] = useState('0');
     const [y_form, setY] = useState('0');
     const [r_form, setR] = useState('1');
-    const [checks, setChecks] = useState(null);
+    const [checks, setChecks] = useState('5');
     return (<div>
         <Graph r={r_form} setChecks={setChecks}/>
         <CoordinatesForm validate={validate} x_form={x_form} y_form={y_form} r_form={r_form} setX={setX} setY={setY}
-                         setR={setR} setChecks={setChecks}/>
+                         setR={setR} setChecks={setChecks} checks={checks} showChecks={showChecks()}/>
         <Resulttable checks={checks}/>
         <Logout/>
     </div>)

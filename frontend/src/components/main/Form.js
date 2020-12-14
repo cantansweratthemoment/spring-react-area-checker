@@ -6,7 +6,7 @@ import store from "../../app/store";
 function CoordinatesForm(props) {
     const submit = () => {
         let information = {
-            "token": store.getState().token,
+            "login": store.getState().login,
             "x": props.x_form,
             "y": props.y_form,
             "r": props.r_form
@@ -20,8 +20,10 @@ function CoordinatesForm(props) {
         if (props.validate()) {
             fetch("/point" + body, {
                 method: "POST"
-            }).then(response => response.json().then(json => {
-//TODO
+            }).then(response => response.text().then(text => {
+                console.log(JSON.parse(text));
+                props.setChecks(JSON.parse(text));
+                //props.showChecks();
             }))
         }
     }

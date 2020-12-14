@@ -1,3 +1,4 @@
+
 import React, {useState} from "react";
 import store from "../../app/store";
 import {InputText} from "primereact/inputtext";
@@ -19,8 +20,11 @@ function Login() {
             method: "POST"
         }).then(response => response.json().then(json => {
                 if (response.ok) {
-                    alert("Удачный логин!")
-                    store.dispatch({type: "changetoken", value: json.getToken});
+                  //  alert("Удачный логин!")
+                    console.log(json)
+                    console.log(json.login)
+
+                    store.dispatch({type: "change", value: json.login});
                 } else {
                     alert("Ошибка!")
                 }
@@ -42,7 +46,10 @@ function Login() {
             method: "POST"
         }).then(response => response.json().then(json => {
             if (response.ok) {
-                alert("Удачная регистрация!")
+             //   alert("Удачная регистрация!")
+                console.log(json)
+                console.log(json.login)
+            //    store.dispatch({type: "change", value: json.login});
             } else {
                 alert("Ошибка!")
             }
