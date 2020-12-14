@@ -121,5 +121,4 @@ function drawPoints(r, checks, context) {
             coordinates[i]['r'], coordinates[i]['result'], r, context);
     }
 }
-//TODO особые условия для проверок с другим радиусом
 export {drawCanvas, clicked};

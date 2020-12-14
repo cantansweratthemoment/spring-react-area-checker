@@ -20,11 +20,11 @@ function Mainpage() {
     const [r_form, setR] = useState('1');
     const [checks, setChecks] = useState('null');
     return (<div>
+        <Logout/>
         <Graph r={r_form} setChecks={setChecks} checks={checks}/>
         <CoordinatesForm validate={validate} x_form={x_form} y_form={y_form} r_form={r_form} setX={setX} setY={setY}
                          setR={setR} setChecks={setChecks} checks={checks} showChecks={showChecks()}/>
         <Resulttable checks={checks}/>
-        <Logout/>
     </div>)
 }
 

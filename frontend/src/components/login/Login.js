@@ -60,12 +60,19 @@ function Login() {
     const [password, setPassword] = useState("");
     return (
         <div className="login_form">
-            <form>
+            <form style={{
+                fontFamily: "monospace",
+                fontWeight: "bolder",
+                fontSize: "170%",
+                color: "#1e154a",
+            }}>
+                Username=
                 <InputText type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)}/>
+               Password=
                 <InputText type="password" id="password" value={password}
                            onChange={(e) => setPassword(e.target.value)}/>
-                <Button type="button" onClick={signUp}>я новенький</Button>
-                <Button type="button" onClick={signIn}>я уже смешарик</Button>
+                <Button type="button" onClick={signUp}>Sign Up</Button>
+                <Button type="button" onClick={signIn}>Log In</Button>
             </form>
         </div>
     )

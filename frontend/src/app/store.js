@@ -15,5 +15,4 @@ function reducer(state, action) {
 }
 
 const store = createStore(reducer, initialState);
-//todo
 export default store;

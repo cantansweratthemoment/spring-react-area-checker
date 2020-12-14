@@ -11,7 +11,7 @@
 #form{
     position: relative;
     bottom: 400px;
-    left: 700px;
+    left: 650px;
 }
 #form input{
     background: #4c3e6d;
@@ -50,6 +50,8 @@ th:first-child, td:first-child {
     text-align: center;
     padding: 1% 2%;
     margin: 2%;
+    left: 200px;
+    margin-bottom: 0.5%;
     font-size: 150%;
     background: white;
     border: solid #FFD7D5;
@@ -58,4 +60,18 @@ th:first-child, td:first-child {
 }
 #but:hover {
     background: #FFD7D5;
+}
+[class="p-paginator p-component p-paginator-bottom"]{
+    background: none;
+    position: relative;
+}
+#button1{
+    position: relative;
+    margin-right: 900px;
+    bottom: 100px;
+}
+#button2{
+    position: relative;
+    margin-right: 800px;
+    bottom: 212px;
 }
