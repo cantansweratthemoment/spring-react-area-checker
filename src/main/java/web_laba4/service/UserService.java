@@ -20,7 +20,7 @@ public class UserService {
     public User register(UserCredentials userCredentials){
         User user = new User();
         user.setLogin(userCredentials.getLogin());
-       // userRepository.updatePassword(user.getId(), userCredentials.getPassword());
+        user.setPassword(userCredentials.getPassword());
         userRepository.save(user);
         return user;
     }
@@ -31,5 +31,10 @@ public class UserService {
 
     public boolean findByLogin(String login){
         return userRepository.countByLogin(login) == 1;
+    }
+
+    public boolean findByLoginAndPassword(String login, String password){
+        int i = userRepository.countUserByLoginAndPassword(login,password);
+        return i == 1;
     }
 }

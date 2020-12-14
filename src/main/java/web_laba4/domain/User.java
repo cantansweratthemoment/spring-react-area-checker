@@ -17,6 +17,12 @@ public class User {
     @Column
     private String login;
 
+    @NotNull
+    @NotEmpty
+    @Column
+    private String password;
+
+
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Point> points;
@@ -43,6 +49,15 @@ public class User {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 }

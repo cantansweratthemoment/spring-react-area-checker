@@ -2,6 +2,7 @@ package com.example.wp.controller;
 
 import com.example.wp.form.UserCredentials;
 import com.example.wp.form.validator.UserCredentialsRegisterValidator;
+import com.example.wp.service.PointService;
 import com.example.wp.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class RegisterPage {
@@ -38,24 +41,38 @@ public class RegisterPage {
         model.addAttribute("registerform", new UserCredentials());
         return "registerPage";
     }
-
-    @PostMapping("/register") //все переписать на такое?
+    @PostMapping("/register")
     public ResponseEntity post(@Valid @ModelAttribute("registerform")UserCredentials credentials, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("bad response");
+            Map<String, Object> resp = new HashMap<>();
+            resp.put("error", bindingResult.getAllErrors());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
         }
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("login", credentials.getLogin());
+        resp.put("password", credentials.getPassword());
         userService.register(credentials);
-
-        return ResponseEntity.ok().body(credentials.getLogin());
+        return ResponseEntity.ok(resp);
     }
     @PostMapping("/login")
-    public String login(@Valid @ModelAttribute("registerform")UserCredentials credentials, BindingResult bindingResult){
+    public ResponseEntity login(@ModelAttribute("registerform")UserCredentials credentials, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            return "registerPage";
+            Map<String, Object> resp = new HashMap<>();
+            resp.put("error", bindingResult.getAllErrors());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
         }
-        if(userService.findByLogin(credentials.getLogin())){
-            return "forward:/index.html";
+        if(userService.findByLoginAndPassword(credentials.getLogin(), credentials.getPassword())) {
+            Map<String, Object> resp = new HashMap<>();
+            resp.put("login", credentials.getLogin());
+            resp.put("password", credentials.getPassword());
+
+            return ResponseEntity.ok(resp);
         }
-        return "registerPage";
+        return null;
+    }
+
+    @PostMapping("/getPoints")
+    public ResponseEntity getPoints(){
+        return  null;
     }
 }

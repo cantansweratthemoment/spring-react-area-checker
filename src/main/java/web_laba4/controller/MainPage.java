@@ -1,0 +1,67 @@
+package com.example.wp.controller;
+
+import com.example.wp.domain.Point;
+import com.example.wp.form.PointsCredentials;
+import com.example.wp.form.validator.PointCredentialsValidator;
+import com.example.wp.repository.UserRepository;
+import com.example.wp.service.PointService;
+import com.example.wp.service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringJoiner;
+
+@Controller
+public class MainPage {
+    private final PointService pointService;
+    private final PointCredentialsValidator pointCredentialsValidator;
+    private final UserRepository userRepository;
+    public MainPage(PointService pointService, PointCredentialsValidator pointCredentialsValidator, UserRepository userRepository){
+        this.pointService = pointService;
+        this.pointCredentialsValidator = pointCredentialsValidator;
+        this.userRepository = userRepository;
+    }
+
+   //todo validator
+
+    @GetMapping("/point")
+    public void getPoint(){
+
+    }
+
+    @PostMapping("/point")
+    public ResponseEntity setPoint( @ModelAttribute("checkForm")PointsCredentials point, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error");
+        }
+        point.setResult(point.getX(), point.getY() , point.getR());
+        pointService.register(point);
+        List<Point> points = pointService.getAllPointsByUser(userRepository.getUserByLogin(point.getLogin()));
+        StringJoiner joiner = new StringJoiner(",");
+        for(Point point1 : points){
+            StringBuilder builder = new StringBuilder();
+            builder.append("{\"x\":\"");
+            builder.append(String.format("%.2f",point1.getX()));
+            builder.append("\", \"y\":\"");
+            builder.append(String.format("%.2f",point1.getY()));
+            builder.append("\", \"r\":\"");
+            builder.append(String.format("%.2f",point1.getR()));
+            builder.append("\", \"result\":\"");
+            builder.append(point1.getResult());
+            builder.append("\"}");
+            joiner.add(builder.toString());
+        }
+        return ResponseEntity.ok("[" + joiner.toString() + "]");
+    }
+}
