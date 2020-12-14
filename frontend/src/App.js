@@ -11,7 +11,7 @@ class App extends Component {
   }
 
   render() {
-    return (<div className="firstPage" style={{
+    return (<div  className="firstPage" style={{
       backgroundImage: "url(images/wallpaper.jpg)",
       backgroundSize: "45%",
       backgroundRepeat: "repeat"

@@ -18,9 +18,9 @@ function Mainpage() {
     const [x_form, setX] = useState('0');
     const [y_form, setY] = useState('0');
     const [r_form, setR] = useState('1');
-    const [checks, setChecks] = useState('5');
+    const [checks, setChecks] = useState('null');
     return (<div>
-        <Graph r={r_form} setChecks={setChecks}/>
+        <Graph r={r_form} setChecks={setChecks} checks={checks}/>
         <CoordinatesForm validate={validate} x_form={x_form} y_form={y_form} r_form={r_form} setX={setX} setY={setY}
                          setR={setR} setChecks={setChecks} checks={checks} showChecks={showChecks()}/>
         <Resulttable checks={checks}/>

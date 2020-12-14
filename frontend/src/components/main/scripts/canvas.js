@@ -1,6 +1,6 @@
 import store from "../../../app/store";
 
-function clicked(e, r, setChecks) {
+function clicked(e, r, setChecks, checks) {
     let r_val = parseFloat(r)
     if (isNaN(r_val)) {
         r_val = 1
@@ -10,7 +10,7 @@ function clicked(e, r, setChecks) {
     let event_y = e.pageY - maslo.offsetTop;
     let x = (event_x - 250) * r / 200;
     let y = (250 - event_y) * r / 200;
-    //drawPoints();
+    //drawCanvas()
     const checkNumbers = (q, a, b) => {
         return ((q > a) && (q < b));
     }
@@ -27,15 +27,17 @@ function clicked(e, r, setChecks) {
         }
         console.log(body);
         body = "?" + body.join("&");
-            fetch("/point" + body, {
-                method: "POST"
-            }).then(response => response.json().then(json => {
-                //todo
-            }))
+        fetch("/point" + body, {
+            method: "POST"
+        }).then(response => response.text().then(text => {
+            console.log(JSON.parse(text));
+            setChecks(JSON.parse(text));
+            //props.showChecks();
+        }))
     }
 }
 
-function drawCanvas(context, r) {
+function drawCanvas(context, r, checks) {
     context.canvas.width = context.canvas.offsetWidth;
     context.canvas.height = context.canvas.offsetHeight;
     let width = context.canvas.width;
@@ -76,35 +78,48 @@ function drawCanvas(context, r) {
     context.strokeText(r_text, 50, 250);
     context.strokeText("Y", 250, 10);
     context.strokeText("X", 490, 250);
-    //drawPoints();
+    drawPoints(r_text, checks, context);
 }
 
-/*function drawPoint(x, y, r, result) {
-    let rr = document.getElementById("form:r_chooser");
-    let rValue = rr.value;
-    let finalX = 250 + x * 200 / rValue;
-    let finalY = 250 - y * 200 / rValue;
-    let canvas = document.getElementById("canvas"),
-        context = canvas.getContext("2d");
+function drawPoint(x, y, r, result, rval, context) {
+    if((x!==undefined)&&(y!==undefined)&&(rval!==undefined)&&(r!==undefined)){
+        x=x.replace(",",".");
+        y=y.replace(",",".");
+        rval=rval.replace(",",".");
+        r=r.replace(",", ".")
+    }
+    let r_valValue = parseFloat(rval);
+    let x_Value = parseFloat(x);
+    let y_Value = parseFloat(y);
+    let r_Value= parseFloat(r);
+    let finalX = 250 + x_Value * 200 / r_valValue;
+    let finalY = 250 - y_Value * 200 / r_valValue;
     if (result === "false") {
         context.fillStyle = "#FF2A1F";
     } else {
         context.fillStyle = "#5FFF33";
     }
+    if(r_Value===r_valValue){
     context.beginPath();
     context.arc(finalX, finalY, 5, 0, 2 * Math.PI);
     context.fill();
     context.stroke();
-    context.closePath();
-}*/
+    context.closePath();}
+}
 
-/*function drawPoints() {
-    let coordinates = Array.prototype.slice.call(document.getElementById("resultTable").getElementsByTagName("td"));
-    for (let i = 0; i < coordinates.length; i = i + 4) {
-        drawPoint(Number(coordinates[i].innerHTML),
-            Number(coordinates[i + 1].innerHTML),
-            Number(coordinates[i + 2].innerHTML), coordinates[i + 3].innerHTML);
+function drawPoints(r, checks, context) {
+    if(checks===null){
+        return;
     }
-}*/
+    let coordinates = checks;
+    if(coordinates.length===0){
+        return
+    }
+    for (let i = 0; i < coordinates.length; i++) {
+        drawPoint(coordinates[i]['x'],
+            coordinates[i]['y'],
+            coordinates[i]['r'], coordinates[i]['result'], r, context);
+    }
+}
 //TODO особые условия для проверок с другим радиусом
 export {drawCanvas, clicked};

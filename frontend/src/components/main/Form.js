@@ -37,7 +37,7 @@ function CoordinatesForm(props) {
                 <InputNumber value={props.y_form} onValueChange={(e) => props.setY(e.value)} mode="decimal"
                              min={-3} max={3}
                              minFractionDigits={1} maxFractionDigits={5} placeholder="Введите Y(-3 .. 3)"/>
-                <InputNumber value={props.r_form} onValueChange={(e) => props.setY(e.value)} mode="decimal"
+                <InputNumber value={props.r_form} onValueChange={(e) => props.setR(e.value)} mode="decimal"
                              min={0} max={3}
                              minFractionDigits={1} maxFractionDigits={5} placeholder="Введите R(0 .. 3)"/>
                 <Button type="button" onClick={submit} icon="pi"/>
