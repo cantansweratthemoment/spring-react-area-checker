@@ -24,12 +24,15 @@ public class PointService {
 
     @NotNull
     @NotEmpty
-    public Point register(PointsCredentials pointsCredentials){
+    public Point register(PointsCredentials pointsCredentials) throws IllegalArgumentException{
         Point point = new Point();
         point.setX(Double.parseDouble(pointsCredentials.getX()));
         point.setY(Double.parseDouble(pointsCredentials.getY()));
         point.setR(Double.parseDouble(pointsCredentials.getR()));
         point.setUser(userRepository.getUserByLogin(pointsCredentials.getLogin()));
+        if(point.getUser() == null){
+             throw new IllegalArgumentException();
+        }
         point.setResult(pointsCredentials.isResult());
         pointRepository.save(point);
         return point;

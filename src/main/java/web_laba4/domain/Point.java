@@ -1,6 +1,7 @@
 package com.example.wp.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "points")
@@ -26,7 +27,7 @@ public class Point {
     public void setResult(String result) {
         this.result = result;
     }
-
+    @NotNull
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;

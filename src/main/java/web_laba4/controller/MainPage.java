@@ -2,6 +2,7 @@ package com.example.wp.controller;
 
 import com.example.wp.domain.Point;
 import com.example.wp.form.PointsCredentials;
+import com.example.wp.form.UserCredentials;
 import com.example.wp.form.validator.PointCredentialsValidator;
 import com.example.wp.repository.UserRepository;
 import com.example.wp.service.PointService;
@@ -33,20 +34,28 @@ public class MainPage {
         this.userRepository = userRepository;
     }
 
-   //todo validator
 
     @GetMapping("/point")
     public void getPoint(){
 
     }
-
+    @InitBinder
+    public void initBinder(WebDataBinder webDataBinder){
+        webDataBinder.addValidators(pointCredentialsValidator);
+    }
     @PostMapping("/point")
-    public ResponseEntity setPoint( @ModelAttribute("checkForm")PointsCredentials point, BindingResult bindingResult){
+    public ResponseEntity setPoint(@Valid @ModelAttribute("checkForm")PointsCredentials point, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error");
         }
         point.setResult(point.getX(), point.getY() , point.getR());
-        pointService.register(point);
+        try {
+            pointService.register(point);
+        }catch (IllegalArgumentException e){
+            Map<String, String> resp = new HashMap<>();
+            resp.put("error", "Вы удалены из жизни");
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(resp);
+        }
         List<Point> points = pointService.getAllPointsByUser(userRepository.getUserByLogin(point.getLogin()));
         StringJoiner joiner = new StringJoiner(",");
         for(Point point1 : points){
@@ -64,4 +73,5 @@ public class MainPage {
         }
         return ResponseEntity.ok("[" + joiner.toString() + "]");
     }
+
 }

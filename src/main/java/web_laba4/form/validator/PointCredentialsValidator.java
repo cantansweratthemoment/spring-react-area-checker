@@ -7,21 +7,26 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 
 @Component
 public class PointCredentialsValidator implements Validator {
-
     private final PointService pointService;
     public PointCredentialsValidator(PointService pointService) {
         this.pointService = pointService;
     }
 
-
+    @NotEmpty
+    @NotNull
     @Override
     public boolean supports(Class<?> aClass) {
-        return PointService.class.equals(aClass);
+        return PointsCredentials.class.equals(aClass);
     }
 
+    @NotEmpty
+    @NotNull
     @Override
     public void validate(Object o, Errors errors) {
         if(!errors.hasErrors()){
