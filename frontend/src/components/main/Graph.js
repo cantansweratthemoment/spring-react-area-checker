@@ -11,7 +11,7 @@ function Graph(props) {
             <canvas id="canvas" ref={canvas} onClick={(e) => {
                 clicked(e, props.r, props.setChecks, props.checks)
             }} style={{
-                width: "500px", height: "500px", textAlign: "center",
+                textAlign: "center",
                 margin: "0 auto"
             }}/>
         </div>

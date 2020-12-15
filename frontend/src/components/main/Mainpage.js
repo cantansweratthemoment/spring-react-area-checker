@@ -1,3 +1,4 @@
+
 import React, {useEffect, useState} from "react";
 import Logout from "./Logout";
 import CoordinatesForm from "./Form";
@@ -10,7 +11,7 @@ function Mainpage() {
     const [x_form, setX] = useState('0');
     const [y_form, setY] = useState('0');
     const [r_form, setR] = useState('1');
-    const [checks, setChecks] = useState('null');
+    const [checks, setChecks] = useState(null);
     useEffect(() => {
         let information = {
             "login": store.getState().login
@@ -19,6 +20,7 @@ function Mainpage() {
         for (const inf in information) {
             body.push(inf + "=" + information[inf]);
         }
+        body = "?" + body;
         if (checks === null) {
             fetch("/all" + body, {
                 method: "POST"
@@ -39,7 +41,7 @@ function Mainpage() {
         console.log(checks);
     }
 
-    return (<div>
+    return (<div id="maindiv">
         <Logout/>
         <Graph r={r_form} setChecks={setChecks} checks={checks}/>
         <CoordinatesForm validate={validate} x_form={x_form} y_form={y_form} r_form={r_form} setX={setX} setY={setY}

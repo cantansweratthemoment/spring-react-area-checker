@@ -16,8 +16,12 @@ class App extends Component {
       backgroundSize: "45%",
       backgroundRepeat: "repeat"
     }}><Heading/><br/>
-      {this.props.store.getState().login == null ? <Loginpage/> : <Mainpage/>}
+      { console.log(this.props.store.getState().login)};
+      {this.props.store.getState().login !== null ? <Mainpage/> :<Loginpage/>}
+
     </div>)
+        //this.localStorage.getItem("login") == null || undefined ? <Loginpage/> : <Mainpage/>
+    //
   }
 }
 

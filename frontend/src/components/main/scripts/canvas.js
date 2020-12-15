@@ -6,11 +6,14 @@ function clicked(e, r, setChecks, checks) {
         r_val = 1
     }
     let maslo = document.getElementById('canvas');
+    let width = maslo.getAttribute("width");
+    let height = maslo.getAttribute("height");
+    console.log(width);
+    console.log(height);
     let event_x = e.pageX - maslo.offsetLeft;
     let event_y = e.pageY - maslo.offsetTop;
-    let x = (event_x - 250) * r / 200;
-    let y = (250 - event_y) * r / 200;
-    //drawCanvas()
+    let x = (event_x - width/2) * r / (width/5*2);
+    let y = (height/2 - event_y) * r / (height/5*2);
     const checkNumbers = (q, a, b) => {
         return ((q > a) && (q < b));
     }
@@ -38,6 +41,7 @@ function clicked(e, r, setChecks, checks) {
 }
 
 function drawCanvas(context, r, checks) {
+    let maslo = document.getElementById('canvas');
     context.canvas.width = context.canvas.offsetWidth;
     context.canvas.height = context.canvas.offsetHeight;
     let width = context.canvas.width;
@@ -46,73 +50,76 @@ function drawCanvas(context, r, checks) {
     let rhalf_text = r / 2 + "";
     context.clearRect(0, 0, width, height);
     context.fillStyle = "#E8D7FF";
-    context.fillRect(150, 50, 100, 200);
+    context.fillRect(width / 5 * 1.5, height / 10, width / 5, height / 5 * 2);
     context.beginPath();
-    context.moveTo(250, 250);
-    context.lineTo(350, 250);
-    context.lineTo(250, 50);
+    context.moveTo(width / 2, height / 2);
+    context.lineTo(width / 5 * 3.5, height / 5 * 2.5);
+    context.lineTo(width / 2, height / 10);
     context.fill();
-    context.moveTo(250, 250);
-    context.arc(250, 250, 100, Math.PI/2, Math.PI);
+    context.moveTo(width / 2, height / 2);
+    context.arc(width / 2, width / 2, width / 5, Math.PI / 2, Math.PI);
     context.fill();
     context.beginPath();
     context.strokeStyle = "#FF47A0";
     context.lineWidth = 2;
-    context.moveTo(0, 250);
-    context.lineTo(500, 250);
+    context.moveTo(0, width / 2);
+    context.lineTo(width, height / 2);
     context.stroke();
     context.beginPath();
     context.strokeStyle = "#FF47A0";
     context.lineWidth = 2;
-    context.moveTo(250, 500);
-    context.lineTo(250, 0);
+    context.moveTo(width / 2, height);
+    context.lineTo(width / 2, 0);
     context.stroke();
-    context.strokeText(rhalf_text, 350, 250);
-    context.strokeText(r_text, 450, 250);
-    context.strokeText(rhalf_text, 250, 350);
-    context.strokeText(r_text, 250, 450);
-    context.strokeText(rhalf_text, 150, 250);
-    context.strokeText(rhalf_text, 250, 150);
-    context.strokeText(r_text, 250, 50);
-    context.strokeText(rhalf_text, 350, 250);
-    context.strokeText(r_text, 50, 250);
-    context.strokeText("Y", 250, 10);
-    context.strokeText("X", 490, 250);
+    context.strokeText(rhalf_text, width / 5 * 3.5, height / 2);
+    context.strokeText(r_text, width / 5 * 4.5, height / 2);
+    context.strokeText(rhalf_text, width / 2, height / 5 * 3.5);
+    context.strokeText(r_text, width / 2, height / 5 * 4.5);
+    context.strokeText(rhalf_text, width / 5 * 1.5, height / 2);
+    context.strokeText(rhalf_text, width / 2, height / 5 * 1.5);
+    context.strokeText(r_text, width / 2, height / 10);
+    context.strokeText(rhalf_text, width / 5 * 3.5, height / 2);
+    context.strokeText(r_text, width / 10, height / 2);
+    context.strokeText("Y", width / 2, height / 10);
+    context.strokeText("X", width / 50 * 49, height / 2);
     drawPoints(r_text, checks, context);
 }
 
 function drawPoint(x, y, r, result, rval, context) {
-    if((x!==undefined)&&(y!==undefined)&&(rval!==undefined)&&(r!==undefined)){
-        x=x.replace(",",".");
-        y=y.replace(",",".");
-        rval=rval.replace(",",".");
-        r=r.replace(",", ".")
+    if ((x !== undefined) && (y !== undefined) && (rval !== undefined) && (r !== undefined)) {
+        x = x.replace(",", ".");
+        y = y.replace(",", ".");
+        rval = rval.replace(",", ".");
+        r = r.replace(",", ".")
     }
     let r_valValue = parseFloat(rval);
     let x_Value = parseFloat(x);
     let y_Value = parseFloat(y);
-    let r_Value= parseFloat(r);
-    let finalX = 250 + x_Value * 200 / r_valValue;
-    let finalY = 250 - y_Value * 200 / r_valValue;
+    let r_Value = parseFloat(r);
+    let width = context.canvas.width;
+    let height = context.canvas.height;
+    let finalX = width/2 + x_Value * (width / 5 * 2) / r_valValue;
+    let finalY = height/2 - y_Value * (height / 5 * 2) / r_valValue;
     if (result === "false") {
         context.fillStyle = "#FF2A1F";
     } else {
         context.fillStyle = "#5FFF33";
     }
-    if(r_Value===r_valValue){
-    context.beginPath();
-    context.arc(finalX, finalY, 5, 0, 2 * Math.PI);
-    context.fill();
-    context.stroke();
-    context.closePath();}
+    if (r_Value === r_valValue) {
+        context.beginPath();
+        context.arc(finalX, finalY, 5, 0, 2 * Math.PI);
+        context.fill();
+        context.stroke();
+        context.closePath();
+    }
 }
 
 function drawPoints(r, checks, context) {
-    if(checks===null){
+    if (checks === null) {
         return;
     }
     let coordinates = checks;
-    if(coordinates.length===0){
+    if (coordinates.length === 0) {
         return
     }
     for (let i = 0; i < coordinates.length; i++) {
@@ -121,4 +128,5 @@ function drawPoints(r, checks, context) {
             coordinates[i]['r'], coordinates[i]['result'], r, context);
     }
 }
+
 export {drawCanvas, clicked};

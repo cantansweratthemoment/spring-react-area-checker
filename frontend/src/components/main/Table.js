@@ -5,12 +5,9 @@ import {Button} from "primereact/button";
 import 'primereact/resources/themes/md-light-deeppurple/theme.css';
 
 function Resulttable(props) {
-    const paginatorLeft = <Button id="button1" type="button" icon="pi pi-cloud">◀️</Button>;
-    const paginatorRight = <Button id="button2" type="button" icon="pi pi-cloud">▶️</Button>;
 
     return (
-        <DataTable id="resultTable" value={props.checks} paginator rows={5}
-                   paginatorLeft={paginatorLeft} paginatorRight={paginatorRight}>
+        <DataTable id="resultTable" value={props.checks}>
             < Column header="X" field="x"/>
             <Column header="Y" field="y"/>
             <Column header="R" field="r"/>

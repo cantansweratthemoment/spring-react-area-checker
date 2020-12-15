@@ -1,13 +1,13 @@
 import {createStore} from "redux";
 
 const initialState = {
-  token: localStorage.getItem("login")
+  login: sessionStorage.getItem("login")
 };
 
 function reducer(state, action) {
   switch (action.type) {
     case "change":
-      localStorage.setItem("login", action.value)
+      sessionStorage.setItem("login", action.value)
       return {login: action.value};
     default:
       return state;

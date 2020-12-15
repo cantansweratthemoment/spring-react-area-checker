@@ -3,7 +3,7 @@ import Login from "./Login";
 import CoordinatesForm from "../main/Form";
 
 function Loginpage() {
-    return (<div>
+    return (<div style={{height:"100vh"}}>
         <Login/>
     </div>);
 }

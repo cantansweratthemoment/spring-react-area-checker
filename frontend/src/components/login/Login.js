@@ -1,8 +1,12 @@
-
 import React, {useState} from "react";
 import store from "../../app/store";
 import {InputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
+import {Messages} from 'primereact/messages';
+import "./login.css"
+import {Message} from 'primereact/message';
+
+let MessageInstance;
 
 function Login() {
 
@@ -20,13 +24,12 @@ function Login() {
             method: "POST"
         }).then(response => response.json().then(json => {
                 if (response.ok) {
-                  //  alert("Удачный логин!")
                     console.log(json)
                     console.log(json.login)
-
                     store.dispatch({type: "change", value: json.login});
                 } else {
-                    alert("Ошибка!")
+                    let errortext = json.error;
+                    MessageInstance.show({severity: 'error', summary: errortext});
                 }
             }
         ))
@@ -46,12 +49,13 @@ function Login() {
             method: "POST"
         }).then(response => response.json().then(json => {
             if (response.ok) {
-             //   alert("Удачная регистрация!")
+                MessageInstance.show({severity: 'success', summary: 'Successful Registration'});
                 console.log(json)
                 console.log(json.login)
-            //    store.dispatch({type: "change", value: json.login});
+                //    store.dispatch({type: "change", value: json.login});
             } else {
-                alert("Ошибка!")
+                let errortext = json.error;
+                MessageInstance.show({severity: 'error', summary: errortext});
             }
         }))
     }
@@ -66,13 +70,18 @@ function Login() {
                 fontSize: "170%",
                 color: "#1e154a",
             }}>
-                Username=
+                <div className="log-field">
+                <label>Username </label>
                 <InputText type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)}/>
-               Password=
+                </div>
+                <div className="log-field">
+                    <label>Password </label>
                 <InputText type="password" id="password" value={password}
                            onChange={(e) => setPassword(e.target.value)}/>
-                <Button type="button" onClick={signUp}>Sign Up</Button>
-                <Button type="button" onClick={signIn}>Log In</Button>
+                </div>
+                <Button className="button" type="button" onClick={signUp}>Sign Up</Button>
+                <Button className="button" type="button" onClick={signIn}>Log In</Button>
+                <Messages icon ref={(el) => MessageInstance = el}/>
             </form>
         </div>
     )
@@ -80,4 +89,3 @@ function Login() {
 
 
 export default Login
-//TODO Нормально обработать ответы от сервера(везде)
