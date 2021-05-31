@@ -12,7 +12,7 @@ public class PercentageCounter extends NotificationBroadcasterSupport implements
 
     @Override
     public void updateCounters(long successful, long all) {
-        percentageCounter = successful / all * 100;
+        percentageCounter = (double) successful / (double) all * 100;
     }
 
     @Override
