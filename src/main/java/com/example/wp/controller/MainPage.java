@@ -4,6 +4,7 @@ import com.example.wp.domain.Point;
 import com.example.wp.form.PointsCredentials;
 import com.example.wp.form.validator.PointCredentialsValidator;
 import com.example.wp.mbeans.PercentageCounter;
+import com.example.wp.mbeans.PercentageCounterMBean;
 import com.example.wp.mbeans.PointsCounterMBean;
 import com.example.wp.repository.UserRepository;
 import com.example.wp.service.PointService;
@@ -29,14 +30,14 @@ public class MainPage {
     private final PointCredentialsValidator pointCredentialsValidator;
     private final UserRepository userRepository;
     private final PointsCounterMBean pointsCounterMBean;
-    private final PercentageCounter percentageCounter;
+    private final PercentageCounterMBean percentageCounterMBean;
 
-    public MainPage(PointService pointService, PointCredentialsValidator pointCredentialsValidator, UserRepository userRepository, PointsCounterMBean pointsCounterMBean, PercentageCounter percentageCounter) {
+    public MainPage(PointService pointService, PointCredentialsValidator pointCredentialsValidator, UserRepository userRepository, PointsCounterMBean pointsCounterMBean, PercentageCounterMBean percentageCounterMBean) {
         this.pointService = pointService;
         this.pointCredentialsValidator = pointCredentialsValidator;
         this.userRepository = userRepository;
         this.pointsCounterMBean = pointsCounterMBean;
-        this.percentageCounter = percentageCounter;
+        this.percentageCounterMBean = percentageCounterMBean;
     }
 
 
@@ -79,7 +80,7 @@ public class MainPage {
             joiner.add(builder.toString());
         }
         pointsCounterMBean.updateCounters(points.get(points.size() - 1));
-        percentageCounter.updateCounters(pointsCounterMBean.getHitPointsCounter(), pointsCounterMBean.getAllPointsCounter());
+        percentageCounterMBean.updateCounters(pointsCounterMBean.getHitPointsCounter(), pointsCounterMBean.getAllPointsCounter());
         return ResponseEntity.ok("[" + joiner.toString() + "]");
     }
 }
