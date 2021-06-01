@@ -24,7 +24,7 @@ public class PointsCounter extends NotificationBroadcasterSupport implements Poi
         Double xx = point.getX();
         Double yy = point.getY();
         Double rr = point.getR();
-        if (Math.abs(xx) <= 2.3 * rr && Math.abs(yy) <= 2.3 * rr) {
+        if (Math.abs(xx) >= 2.3 * rr && Math.abs(yy) >= 2.3 * rr) {
             Notification notification = new Notification(
                     "PointOutOfBounds", this, System.currentTimeMillis(),
                     "The point is out of bounds."
